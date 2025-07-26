@@ -1,4 +1,4 @@
-name: Unzip and Move All Contents to Root
+name: Unzip to Root
 
 on:
   workflow_dispatch:
@@ -8,28 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Unzip and move files to root
+      - name: Unzip source-main.zip to root
         run: |
-          # ابحث عن ملف zip
-          zip_file=$(find . -name '*.zip' | head -n 1)
-          echo "📦 Found zip file: $zip_file"
+          unzip source-main.zip -d temp
+          mv temp/* ./
+          rm -rf temp source-main.zip
 
-          # فك الضغط في مجلد مؤقت
-          mkdir temp_unzip
-          unzip -o "$zip_file" -d temp_unzip
-
-          # ابحث عن أول مجلد داخلي (مثلاً source-main/)
-          inner_dir=$(find temp_unzip -mindepth 1 -maxdepth 1 -type d | head -n 1)
-          echo "📁 Inner directory: $inner_dir"
-
-          # انقل كل الملفات والمجلدات من داخله إلى الجذر
-          shopt -s dotglob
-          mv "$inner_dir"/* .
-          shopt -u dotglob
-
-          # احذف المجلد المؤقت
-          rm -rf temp_unzip
-          echo "✅ Done moving files to root!"
+      - name: Commit unzipped files
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "Unzipped source-main.zip to root"
+          git push
