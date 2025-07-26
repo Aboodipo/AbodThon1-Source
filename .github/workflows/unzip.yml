@@ -1,17 +1,17 @@
-name: Unzip to Root
+name: فك الضغط للمجلد الرئيسي
 
 on:
   workflow_dispatch:
 
 jobs:
-  unzip:
+  unzip_job:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # عشان نقدر نعمل push بعدين
+          fetch-depth: 0
 
       - name: Unzip source-main.zip to root
         run: |
