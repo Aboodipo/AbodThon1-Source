@@ -1,0 +1,33 @@
+name: Unzip and Move to Root
+
+on:
+  push:
+    paths:
+      - 'source-main.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Unzip into temp folder
+        run: |
+          unzip source-main.zip -d temp
+
+      - name: Move files to root
+        run: |
+          FOLDER=$(ls temp)
+          shopt -s dotglob
+          mv temp/$FOLDER/* .
+          rm -rf temp
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Unzipped and moved contents to root"
+          git push
