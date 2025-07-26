@@ -10,17 +10,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # عشان نقدر نعمل push بعدين
 
       - name: Unzip source-main.zip to root
         run: |
-          unzip source-main.zip -d temp
-          mv temp/* ./
-          rm -rf temp source-main.zip
+          if [ -f source-main.zip ]; then
+            unzip source-main.zip -d temp
+            mv temp/* ./
+            rm -rf temp source-main.zip
+          else
+            echo "source-main.zip not found, skipping unzip"
+          fi
 
       - name: Commit unzipped files
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add .
-          git commit -m "Unzipped source-main.zip to root"
-          git push
+          git commit -m "Unzipped source-main.zip to root" || echo "No changes to commit"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
