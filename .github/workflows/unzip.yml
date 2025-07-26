@@ -1,24 +1,35 @@
-name: Unzip & Move Files
+name: Unzip and Move All Contents to Root
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  unzip-and-move:
+  unzip:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Move files from subfolder to root
+      - name: Unzip and move files to root
         run: |
-          FOLDER="AbodThon"
-          if [ -d "$FOLDER" ]; then
-            mv "$FOLDER"/* .
-            mv "$FOLDER"/.* . 2>/dev/null || true
-            rm -rf "$FOLDER"
-          else
-            echo "Folder $FOLDER not found"
-          fi
+          # ابحث عن ملف zip
+          zip_file=$(find . -name '*.zip' | head -n 1)
+          echo "📦 Found zip file: $zip_file"
+
+          # فك الضغط في مجلد مؤقت
+          mkdir temp_unzip
+          unzip -o "$zip_file" -d temp_unzip
+
+          # ابحث عن أول مجلد داخلي (مثلاً source-main/)
+          inner_dir=$(find temp_unzip -mindepth 1 -maxdepth 1 -type d | head -n 1)
+          echo "📁 Inner directory: $inner_dir"
+
+          # انقل كل الملفات والمجلدات من داخله إلى الجذر
+          shopt -s dotglob
+          mv "$inner_dir"/* .
+          shopt -u dotglob
+
+          # احذف المجلد المؤقت
+          rm -rf temp_unzip
+          echo "✅ Done moving files to root!"
