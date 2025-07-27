@@ -4,7 +4,7 @@ import time
 
 import heroku3
 
-from .Config import Config
+from .Tepthon.Config import Config
 from .core.logger import logging
 from .core.session import zedub
 from .helpers.functions.converter import Convert
