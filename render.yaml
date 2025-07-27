@@ -6,7 +6,7 @@ databases:
 services:
   - type: web
     plan: free
-    name: Ous
+    name: Ohs
     env: python
     repo: https://github.com/Aboodipo/AbodThon1-Source
     buildCommand: pip install -U -r requirements.txt
