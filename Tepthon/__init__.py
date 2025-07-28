@@ -4,7 +4,7 @@ import time
 
 import heroku3
 
-from .Config import config
+from .Config import Config
 from .core.logger import logging
 from .core.session import zedub
 from .helpers.functions.converter import Convert
@@ -12,19 +12,19 @@ from .helpers.utils.utils import runasync
 from .sql_helper.globals import addgvar, delgvar, gvarstatus
 
 __version__ = "3.3.3"
-__license__ = "حقـوق سـورس عبودثون"
-__author__ = "عبودثون <https://T.me/AbodThon>"
-__copyright__ = "AbodThon Source (C) 2020 - 2024  " + __author__
+__license__ = "حقـوق سـورس تيبثــون"
+__author__ = "تيبثــون <https://T.me/ZThon>"
+__copyright__ = "Tepthon Source (C) 2020 - 2024  " + __author__
 
 zedub.version = __version__
-LOGS = logging.getLogger("عبودثون")
+LOGS = logging.getLogger("تيبثــون")
 bot = zedub
 
 StartTime = time.time()
 tepversion = "3.3.3"
 
 if Config.UPSTREAM_REPO == "zel":
-    UPSTREAM_REPO_URL = "https://github.com/AbodThon/UserBot"
+    UPSTREAM_REPO_URL = "https://github.com/TepthonArabic/UserBot"
 else:
     UPSTREAM_REPO_URL = Config.UPSTREAM_REPO
 
