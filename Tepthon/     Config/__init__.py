@@ -1,1 +1,1 @@
-# هذا ملف __init__.py فارغ، فقط لتمييز هذا المجلد كموديل
+from .zedub_config import Config
